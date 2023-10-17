@@ -3,15 +3,16 @@
 class Game
   attr_accessor :player1, :player2, :board
   
-  def initialize
+  def initialize(board, players)
     @round = 0
+    @board = board
+    @players = players
+    puts 'Welcome to Connect Four!'
   end 
 
   # test this to see if it's changing instance variables
   def get_names
-    puts 'Welcome to Connect Four!'
     puts 'Player 1 what is your name?'
-    players = Players.new
     @player1 = gets.chomp
     puts 'Player 2 what is your name?'
     @player2 = gets.chomp
@@ -21,7 +22,6 @@ class Game
   # check whether object is recieving calls to method with double instance
   def play_game
     get_names
-    board = Board.new
     board.display_board
 
   end
@@ -87,11 +87,11 @@ class Players
   end 
 
 
-  # Player Name
-
   # take input 0-6
 
 end
 
-game = Game.new
-game.play_game
+#players = Players.new
+# board = Board.new
+# game = Game.new(board, players)
+# game.play_game
