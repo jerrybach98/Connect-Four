@@ -7,12 +7,16 @@ class Game
     @round = 0
     @board = board
     @players = players
-    puts 'Welcome to Connect Four!'
   end 
+
+  def introduction
+    puts 'Welcome to Connect Four!'
+  end
 
   # test this to see if it's changing instance variables
   def get_names
-    puts 'Player 1 what is your name?'
+    introduction
+    puts 'Player 2 what is your name?'
     @player1 = gets.chomp
     puts 'Player 2 what is your name?'
     @player2 = gets.chomp
@@ -22,7 +26,10 @@ class Game
   # check whether object is recieving calls to method with double instance
   def play_game
     get_names
+    # loop this
     board.display_board
+    column = @players.get_input
+    board.drop_token(column)
 
   end
 
@@ -56,9 +63,12 @@ class Board
     puts "0 1 2 3 4 5 6"
   end
 
-  # update input
+  def drop_token(column)
     # array position Board[6][input] or x- 1 until not empty
-    # or try reversing the nested array
+
+  # "\e[31mtext here\e[0m"
+  # yellow 33
+  end
 
   # Win Conditions
 
@@ -87,11 +97,24 @@ class Players
   end 
 
 
-  # take input 0-6
+  def get_input
+    loop do
+      begin
+        input = gets.chomp
+        input = Integer(input)
+        return input if input.between?(0, 6)
+        
+        puts 'Position invalid, please place your token between 0 and 6'
+      rescue ArgumentError
+        puts 'Position invalid, please place your token between 0 and 6'
+      end
+    end
+    input
+  end
 
 end
 
-#players = Players.new
-# board = Board.new
-# game = Game.new(board, players)
-# game.play_game
+ players = Players.new
+ board = Board.new
+ game = Game.new(board, players)
+ game.play_game

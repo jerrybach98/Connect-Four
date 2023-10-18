@@ -1,5 +1,5 @@
 # Connect Four
-Connect four game in CLI. Two players can play against each other and the board is updated in between turns.
+Connect Four is a command-line interface (CLI) game that allows two players to compete against each other. The game board is updated after each turn.
 
 **Live Demo: https://replit.com/@jerrybach98/Connect-Four
 
@@ -10,7 +10,9 @@ Connect four game in CLI. Two players can play against each other and the board 
 
 ### Lessons Learned:
 * Learning to write a command line interface application using object oriented programming principles 
-* Writing tests with RSpec
-* The importance of the single responsibility principle for test driven development 
-* Visually representing a functioning game in the command line that takes user inputs with logic to decide a winner 
-* Manipulating nested arrays to represent a game board
+* Writing comprehensive tests with RSpec to ensure the correctness of the game logic
+* Adjusting RSpec to achieve the desired test output
+* Testing instance doubles and stubs to isolate dependencies during testing
+* Understanding the importance of the single responsibility principle and modular code for test-driven development
+* Creating a functioning command-line game that captures user input and implements the game's logic
+* Manipulating nested arrays to represent and update the game board dynamically

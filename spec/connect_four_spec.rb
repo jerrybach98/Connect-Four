@@ -10,42 +10,91 @@ describe Game do
       let(:board) { instance_double(Board) }
       let(:players) { instance_double(Players) }
 
+      before do
+        allow(game).to receive(:puts)
+        allow(game).to receive(:gets).and_return('Jerry', 'Mogu')
+      end
+
       it 'changes player 1 name' do
-        allow(game).to receive(:gets).and_return('Jerry')
         expect { game.get_names }.to change { game.instance_variable_get(:@player1) }.to('Jerry')
       end
 
       it 'changes player 2 name' do
-        allow(game).to receive(:gets).and_return('Mogu')
         expect { game.get_names }.to change { game.instance_variable_get(:@player2) }.to('Mogu')
       end
     end
   end
 
   describe '#play_game' do
-    context 'get names from both players' do
-      subject(:game) { described_class.new(board, players) }
-      let(:board) { instance_double(Board) }
-      let(:players) { instance_double(Players) }
-      
-      before do
-      
+    subject(:game) { described_class.new(board, players) }
+    let(:board) { instance_double(Board) }
+    let(:players) { instance_double(Players) }
+    
+    context "play games looping script method" do
+      before do 
+        allow(board).to receive(:display_board)
+        allow(players).to receive(:get_input)
+        allow(game).to receive(:puts) # prevent puts information returned by function to display to console
+        allow(game).to receive(:gets).and_return('Jerry', 'Mogu')
       end
 
       it 'sends display board' do
-        # expect(players).to receive(:gets).with('Jerry')
-        allow(game).to receive(:gets).and_return('Jerry')
-        expect { game.get_names }.to change { game.instance_variable_get(:@player1) }.to('Jerry')
+        expect(board).to receive(:display_board).once
+        game.play_game
       end
 
-      it 'changes player 2 name' do
-        allow(game).to receive(:gets).and_return('Mogu')
-        expect { game.get_names }.to change { game.instance_variable_get(:@player2) }.to('Mogu')
+      it 'sends get input to players class' do
+        expect(players).to receive(:get_input).once
+        game.play_game
+      end
+    end
+  end
+end
+
+
+describe Board do
+  
+  describe '#get_input' do
+    subject(:input) { described_class.new }
+    
+    context 'get inputs from players between 0 and 6' do
+      before do
+        allow(input).to receive(:gets).and_return('5')
+      end
+    end
+  end
+end
+
+describe Players do
+  
+  describe '#get_input' do
+    subject(:input) { described_class.new }
+    
+    context 'get inputs from players between 0 and 6' do
+      before do
+        allow(input).to receive(:gets).and_return('5')
+      end
+
+      it 'returns player input' do
+        expect(input.get_input).to eq(5)
+      end
+    end
+
+    context 'invalid input then valid input' do
+      before do
+        allow(input).to receive(:gets).and_return('a', '5')
+        
+      end
+
+      it 'displays error once then complete loop' do
+        expect(input).to receive(:puts).with('Position invalid, please place your token between 0 and 6').once
+        input.get_input
       end
     end
   end
 
 end
+
 
 
 
