@@ -54,12 +54,17 @@ end
 
 describe Board do
   
-  describe '#get_input' do
-    subject(:input) { described_class.new }
+  describe '#drop_token' do
+    subject(:token) { described_class.new }
     
     context 'get inputs from players between 0 and 6' do
       before do
-        allow(input).to receive(:gets).and_return('5')
+      #  allow(input).to receive(:gets).and_return('5')
+      # allow(token).to receive(:gets).and_return(3)
+      end
+
+      it 'changes game board' do
+        expect { token.drop_token(3) }.to change { token.instance_variable_get(:@board) }
       end
     end
   end
