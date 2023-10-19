@@ -28,10 +28,13 @@ class Game
       column = @players.get_input
       board.drop_token(column, @round)
       @round += 1
-      # return
+      return # for rspec until win condition is written
     end
   end
 
+  def column_error
+    puts "Column is full, please put token somewhere else"
+  end
   # announcements
 
 end
@@ -70,12 +73,16 @@ class Board
   end
 
   def check_token_stack(row, column)
-    # how to handle nil?
     until @board[row][column] == '◯'
       row += 1
     end
     row
   end
+
+  def column_full?(column)
+    @board.all? { |row| row[column] != '◯'}
+  end
+
 
   # Win Conditions
 
@@ -97,10 +104,12 @@ class Board
 end
 
 class Players
+  attr_accessor :board
 
-  def initialize
+  def initialize(board)
     @player1 = nil
     @player2 = nil
+    @board = board
   end 
 
   def get_names
@@ -115,7 +124,7 @@ class Players
       begin
         input = gets.chomp
         input = Integer(input)
-        return input if input.between?(0, 6)
+        return input if input.between?(0, 6) && board.column_full?(input) == false
         
         puts 'Position invalid, please place your token between 0 and 6'
       rescue ArgumentError
@@ -125,9 +134,13 @@ class Players
     input
   end
 
+
+
+
+
 end
 
- players = Players.new
- board = Board.new
- game = Game.new(board, players)
- game.play_game
+# board = Board.new
+# players = Players.new(board)
+# game = Game.new(board, players)
+# game.play_game
