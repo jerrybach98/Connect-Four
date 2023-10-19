@@ -25,7 +25,7 @@ describe Game do
     end
   end
 
-  describe '#play_game' do
+  describe '#game_loop' do
     subject(:game) { described_class.new(board, players) }
     let(:board) { instance_double(Board) }
     let(:players) { instance_double(Players) }
@@ -35,17 +35,22 @@ describe Game do
         allow(board).to receive(:display_board)
         allow(players).to receive(:get_input)
         allow(game).to receive(:puts) # prevent puts information returned by function to display to console
-        allow(game).to receive(:gets).and_return('Jerry', 'Mogu')
+        allow(board).to receive(:drop_token)
       end
 
-      it 'sends display board' do
+      it 'sends #display_board' do
         expect(board).to receive(:display_board).once
-        game.play_game
+        game.game_loop
       end
 
-      it 'sends get input to players class' do
+      it 'sends #get_input to players class' do
         expect(players).to receive(:get_input).once
-        game.play_game
+        game.game_loop
+      end
+
+      it 'sends #drop_token to board class' do
+        expect(board).to receive(:drop_token).once
+        game.game_loop
       end
     end
   end
@@ -64,7 +69,7 @@ describe Board do
       end
 
       it 'adds token to change game board' do
-        expect { token.drop_token(3) }.to change { token.instance_variable_get(:@board) }
+        expect { token.drop_token(3, 1) }.to change { token.instance_variable_get(:@board) }
       end
     end
 

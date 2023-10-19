@@ -4,7 +4,7 @@ class Game
   attr_accessor :player1, :player2, :board
   
   def initialize(board, players)
-    @round = 0
+    @round = 1
     @board = board
     @players = players
   end 
@@ -22,16 +22,22 @@ class Game
     @player2 = gets.chomp
   end
 
-  # Looping script method
+  # script method
   # check whether object is recieving calls to method with double instance
   def play_game
     get_names
-    #loop do
+    game_loop
+  end
+
+  # Looping scrip method
+  def game_loop
+    loop do
       board.display_board
       column = @players.get_input
-    #  board.drop_token(column)
-    #end
-
+      board.drop_token(column, @round)
+      @round += 1
+      return
+    end
   end
 
   # announcements
@@ -64,21 +70,14 @@ class Board
     puts "0 1 2 3 4 5 6"
   end
 
-  def drop_token(column)
+  def drop_token(column, round)
     row = 0
     row = check_token_stack(row, column)
-    @board[row][column] = "●"
-
-
-    # loop do array position Board[input+1][input+!] until not ◯
-    # change bottom array to a solid black circle
-    # array filled helper function +!
-    # handle until nil
-
-  # "\e[31mtext here\e[0m"
-  # if turn odd red
-  # turn even yellow
-  # yellow 33
+    if round.odd?
+      @board[row][column] = "\e[31m●\e[0m"
+    else 
+      @board[row][column] = "\e[1m\e[33m●\e[0m"
+    end
   end
 
   def check_token_stack(row, column)
@@ -132,7 +131,7 @@ class Players
 
 end
 
-#players = Players.new
-#board = Board.new
-#game = Game.new(board, players)
-#game.play_game
+# players = Players.new
+# board = Board.new
+# game = Game.new(board, players)
+# game.play_game
