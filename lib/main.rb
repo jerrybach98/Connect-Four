@@ -32,9 +32,6 @@ class Game
     end
   end
 
-  def column_error
-    puts "Column is full, please put token somewhere else"
-  end
   # announcements
 
 end

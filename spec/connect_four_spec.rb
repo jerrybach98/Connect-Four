@@ -52,6 +52,10 @@ describe Game do
         expect(board).to receive(:drop_token).once
         game.game_loop
       end
+
+      it 'increments round by 1' do
+        expect { game.game_loop }.to change { game.instance_variable_get(:@round) }
+      end
     end
   end
 end
@@ -90,7 +94,8 @@ describe Players do
 
   describe '#get_names' do
     context 'get names from both players' do
-      subject(:players) { described_class.new }
+      subject(:players) { described_class.new(board) }
+      let(:board) { instance_double(Board) }
     
       before do
         allow(players).to receive(:puts)
@@ -108,22 +113,30 @@ describe Players do
   end
   
   describe '#get_input' do
-    subject(:input) { described_class.new }
+    subject(:input) { described_class.new(board) }
+    let(:board) { instance_double(Board) }
     
     context 'get inputs from players between 0 and 6' do
       before do
         allow(input).to receive(:gets).and_return('5')
+        allow(board).to receive(:column_full?).and_return(false)
       end
 
       it 'returns player input' do
         expect(input.get_input).to eq(5)
       end
+
+      it 'sends #column_full? to board class' do
+        expect(board).to receive(:column_full?)
+        input.get_input
+      end
+
     end
 
     context 'invalid input then valid input' do
       before do
         allow(input).to receive(:gets).and_return('a', '5')
-        
+        allow(board).to receive(:column_full?).and_return(false)
       end
 
       it 'displays error once then complete loop' do
@@ -136,9 +149,5 @@ describe Players do
 end
 
 
-
-
-
-# Board 
-# input
-# win conditions
+# test if round variable is changing
+# check if column full is working for true
