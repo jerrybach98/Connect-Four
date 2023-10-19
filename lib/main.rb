@@ -26,11 +26,11 @@ class Game
   # check whether object is recieving calls to method with double instance
   def play_game
     get_names
-    loop do
+    #loop do
       board.display_board
       column = @players.get_input
-      board.drop_token(column)
-    end
+    #  board.drop_token(column)
+    #end
 
   end
 
@@ -64,16 +64,28 @@ class Board
     puts "0 1 2 3 4 5 6"
   end
 
-  def drop_token(y_value)
-    @board[0][y_value] = "●"
-    # loop do array position Board[0][input+!] until not ◯
+  def drop_token(column)
+    row = 0
+    row = check_token_stack(row, column)
+    @board[row][column] = "●"
+
+
+    # loop do array position Board[input+1][input+!] until not ◯
     # change bottom array to a solid black circle
     # array filled helper function +!
+    # handle until nil
 
   # "\e[31mtext here\e[0m"
   # if turn odd red
   # turn even yellow
   # yellow 33
+  end
+
+  def check_token_stack(row, column)
+    until @board[row][column] == '◯'
+      row += 1
+    end
+    row
   end
 
   # Win Conditions
@@ -120,7 +132,7 @@ class Players
 
 end
 
-players = Players.new
-board = Board.new
-game = Game.new(board, players)
-game.play_game
+#players = Players.new
+#board = Board.new
+#game = Game.new(board, players)
+#game.play_game

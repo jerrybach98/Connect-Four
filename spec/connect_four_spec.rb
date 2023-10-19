@@ -63,10 +63,21 @@ describe Board do
       # allow(token).to receive(:gets).and_return(3)
       end
 
-      it 'changes game board' do
+      it 'adds token to change game board' do
         expect { token.drop_token(3) }.to change { token.instance_variable_get(:@board) }
       end
     end
+
+    context 'check how much a column is filled' do 
+      it 'returns new value for row' do
+        board = token.instance_variable_get(:@board)
+        board[0][1] = "●"
+        expect(token.check_token_stack(0, 1)).to eq(1)
+      end
+    end
+
+
+
   end
 end
 
