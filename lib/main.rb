@@ -13,37 +13,26 @@ class Game
     puts 'Welcome to Connect Four!'
   end
 
-  # test this to see if it's changing instance variables
-  def get_names
-    introduction
-    puts 'Player 1 what is your name?'
-    @player1 = gets.chomp
-    puts 'Player 2 what is your name?'
-    @player2 = gets.chomp
-  end
 
   # script method
-  # check whether object is recieving calls to method with double instance
   def play_game
-    get_names
+    introduction
+    @players.get_names
     game_loop
   end
 
-  # Looping scrip method
+  # Looping script method
   def game_loop
     loop do
       board.display_board
       column = @players.get_input
       board.drop_token(column, @round)
       @round += 1
-      return
+      # return
     end
   end
 
   # announcements
-
-  # Implement rounds for each input
-    # Player 1 odd, player 2 even
 
 end
 
@@ -81,6 +70,7 @@ class Board
   end
 
   def check_token_stack(row, column)
+    # how to handle nil?
     until @board[row][column] == '◯'
       row += 1
     end
@@ -113,6 +103,12 @@ class Players
     @player2 = nil
   end 
 
+  def get_names
+    puts 'Player 1 what is your name?'
+    @player1 = gets.chomp
+    puts 'Player 2 what is your name?'
+    @player2 = gets.chomp
+  end
 
   def get_input
     loop do
@@ -131,7 +127,7 @@ class Players
 
 end
 
-# players = Players.new
-# board = Board.new
-# game = Game.new(board, players)
-# game.play_game
+ players = Players.new
+ board = Board.new
+ game = Game.new(board, players)
+ game.play_game

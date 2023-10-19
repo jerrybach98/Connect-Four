@@ -4,23 +4,23 @@ require './lib/main.rb'
 # test get_names to see if it's changing instance variables
 describe Game do
   
-  describe '#get_names' do
-    context 'get names from both players' do
+  describe '#play_game' do
+    context 'see if method is being sent to class' do
       subject(:game) { described_class.new(board, players) }
       let(:board) { instance_double(Board) }
       let(:players) { instance_double(Players) }
 
       before do
         allow(game).to receive(:puts)
-        allow(game).to receive(:gets).and_return('Jerry', 'Mogu')
+        allow(board).to receive(:display_board)
+        allow(players).to receive(:get_input)
+        allow(players).to receive(:get_names)
+        allow(board).to receive(:drop_token)
       end
 
-      it 'changes player 1 name' do
-        expect { game.get_names }.to change { game.instance_variable_get(:@player1) }.to('Jerry')
-      end
-
-      it 'changes player 2 name' do
-        expect { game.get_names }.to change { game.instance_variable_get(:@player2) }.to('Mogu')
+      it 'sends #get_names to player class' do
+        expect(players).to receive(:get_names).once
+        game.play_game
       end
     end
   end
@@ -87,6 +87,25 @@ describe Board do
 end
 
 describe Players do
+
+  describe '#get_names' do
+    context 'get names from both players' do
+      subject(:players) { described_class.new }
+    
+      before do
+        allow(players).to receive(:puts)
+        allow(players).to receive(:gets).and_return('Jerry', 'Mogu')
+      end
+
+      it 'changes player 1 name' do
+        expect { players.get_names }.to change { players.instance_variable_get(:@player1) }.to('Jerry')
+      end
+
+      it 'changes player 2 name' do
+        expect { players.get_names }.to change { players.instance_variable_get(:@player2) }.to('Mogu')
+      end
+    end
+  end
   
   describe '#get_input' do
     subject(:input) { described_class.new }
