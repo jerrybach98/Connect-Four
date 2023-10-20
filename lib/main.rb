@@ -1,5 +1,3 @@
-# classes
-
 class Game
   attr_accessor :player1, :player2, :board
   
@@ -80,7 +78,9 @@ class Board
     @board.all? { |row| row[column] != '◯'}
   end
 
-
+  def check_win?
+  end
+  
   # Win Conditions
 
     # Rows

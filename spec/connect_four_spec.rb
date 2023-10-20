@@ -106,6 +106,61 @@ describe Board do
     end
   end
 
+  describe '#check_win?' do
+    subject(:win) { described_class.new }
+
+    context 'check for any patterns of four' do 
+      before do
+        allow(win).to receive(:row_win?).and_return(true)
+        allow(win).to receive(:column_win?).and_return(true)
+        allow(win).to receive(:diagonal_win?).and_return(true)
+      end
+
+      xit 'returns true when one condition is met' do
+        expect(win.check_win?).to eq true
+      end
+    end
+  end
+
+  describe '#row_win?' do
+    subject(:row) { described_class.new }
+
+    context 'check for four in a row' do 
+      before do
+      end
+
+      xit 'returns true if four match on second row' do
+        expect(row.row_win?).to eq true
+      end
+    end
+  end
+
+  describe '#column_win?' do
+    subject(:column) { described_class.new }
+
+    context 'check for four in a column' do 
+      before do
+      end
+
+      xit 'returns true if four match in column 3' do
+        expect(column.column_win?).to eq true
+      end
+    end
+  end
+
+  describe '#diagonal_win?' do
+    subject(:row) { described_class.new }
+
+    context 'check for four in a diagonal' do 
+      before do
+      end
+
+      xit 'returns true if four match in diagonal' do
+        expect(row.diagonal_win?).to eq true
+      end
+    end
+  end
+
 
 
 end
