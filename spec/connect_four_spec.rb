@@ -16,11 +16,21 @@ describe Game do
         allow(players).to receive(:get_input)
         allow(players).to receive(:get_names)
         allow(board).to receive(:drop_token)
+        allow(game).to receive(:game_loop).and_return("Win") #
       end
 
       it 'sends #get_names to player class' do
         expect(players).to receive(:get_names).once
         game.play_game
+      end
+
+      it 'sends #display_board to player class' do
+        expect(board).to receive(:display_board).once
+        game.play_game
+      end
+
+      xit 'receives win message' do
+        expect(game.game_loop).to eq("Win")
       end
     end
   end
@@ -36,6 +46,7 @@ describe Game do
         allow(players).to receive(:get_input)
         allow(game).to receive(:puts) # prevent puts information returned by function to display to console
         allow(board).to receive(:drop_token)
+        allow(board).to receive(:check_win?).and_return(true)
       end
 
       it 'sends #display_board' do
@@ -112,11 +123,11 @@ describe Board do
     context 'check for any patterns of four' do 
       before do
         allow(win).to receive(:row_win?).and_return(true)
-        allow(win).to receive(:column_win?).and_return(true)
-        allow(win).to receive(:diagonal_win?).and_return(true)
+        # allow(win).to receive(:column_win?).and_return(true)
+        # allow(win).to receive(:diagonal_win?).and_return(true)
       end
 
-      xit 'returns true when one condition is met' do
+      it 'returns true when one win pattern matches' do
         expect(win.check_win?).to eq true
       end
     end
@@ -129,7 +140,9 @@ describe Board do
       before do
       end
 
-      xit 'returns true if four match on second row' do
+      it 'returns true if four match on second row' do
+        board = row.instance_variable_get(:@board)
+        board[1][3], board[1][4], board[1][5], board[1][6] = '●', '●', '●', '●'
         expect(row.row_win?).to eq true
       end
     end

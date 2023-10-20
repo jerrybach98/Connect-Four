@@ -16,21 +16,23 @@ class Game
   def play_game
     introduction
     @players.get_names
-    game_loop
+    board.display_board
+    p game_loop
   end
 
   # Looping script method
   def game_loop
     loop do
-      board.display_board
       column = @players.get_input
       board.drop_token(column, @round)
+      board.display_board
       @round += 1
-      return # for rspec until win condition is written
+      return "Win" if board.check_win? # for rspec until win condition is written
     end
   end
 
   # announcements
+  # Winner announce depending on round even or odd
 
 end
 
@@ -78,10 +80,29 @@ class Board
     @board.all? { |row| row[column] != '◯'}
   end
 
+  # Script method to check for wins
   def check_win?
+    return true if row_win?
+    #return true if column_win?
+    #return true if diagonal_win?
+    false
   end
   
-  # Win Conditions
+  # sliding window?
+  def row_win?
+    @board.each do |row|
+      col = 0 
+
+      until col == 4
+        if row[col] != '◯' && row[col] == row[col+1] && row[col] == row[col+2] && row[col] == row[col+3]
+          return true
+        else 
+          col += 1
+        end
+      end
+    end
+    false
+  end
 
     # Rows
       # Check for 4, each index == Y+1
