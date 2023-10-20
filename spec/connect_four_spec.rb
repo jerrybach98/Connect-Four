@@ -5,7 +5,7 @@ require './lib/main.rb'
 describe Game do
   
   describe '#play_game' do
-    context 'see if method is being sent to class' do
+    context 'see if methods are being sent to class' do
       subject(:game) { described_class.new(board, players) }
       let(:board) { instance_double(Board) }
       let(:players) { instance_double(Players) }
@@ -76,7 +76,11 @@ describe Board do
         expect { token.drop_token(3, 1) }.to change { token.instance_variable_get(:@board) }
       end
     end
+  end
 
+  describe '#check_token_stack' do
+    subject(:token) { described_class.new }
+    
     context 'check how much a column is filled' do 
       it 'returns new value for row' do
         board = token.instance_variable_get(:@board)
@@ -84,10 +88,26 @@ describe Board do
         expect(token.check_token_stack(0, 1)).to eq(1)
       end
     end
-
-
-
   end
+
+  describe '#column_full?' do
+    subject(:token) { described_class.new }
+
+    context 'check if column is filled entirely' do 
+      it 'returns true when filled' do
+        board = token.instance_variable_get(:@board)
+        board.each do |row|
+          row.map! do |element|
+            element = '●'
+          end
+        end
+        expect(token.column_full?(1)).to eq true
+      end
+    end
+  end
+
+
+
 end
 
 describe Players do
@@ -147,7 +167,3 @@ describe Players do
   end
 
 end
-
-
-# test if round variable is changing
-# check if column full is working for true
