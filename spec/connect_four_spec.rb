@@ -1,7 +1,5 @@
 require './lib/main.rb'
 
-
-# test get_names to see if it's changing instance variables
 describe Game do
   
   describe '#play_game' do
@@ -48,7 +46,7 @@ describe Game do
         allow(board).to receive(:drop_token)
         allow(board).to receive(:check_win?).and_return(true)
         allow(game).to receive(:draw?).and_return(false)
-        allow(game).to receive(:winner).and_return('Jerry wins!')
+        allow(game).to receive(:winner_announcement).and_return('Jerry wins!')
       end
 
       it 'sends #display_board' do
@@ -81,18 +79,18 @@ describe Game do
     end
   end
 
-  describe '#winner' do
+  describe '#winner_announcement' do
     subject(:game) { described_class.new(board, players) }
     let(:board) { instance_double(Board) }
     let(:players) { instance_double(Players) }
     
     context "play games looping script method" do
       before do 
-        allow(game).to receive(:winner).and_return('Jerry wins!')
+        allow(game).to receive(:winner_announcement).and_return('Jerry wins!')
       end
 
       it 'returns the winning message' do
-        expect(game.winner).to eq('Jerry wins!')
+        expect(game.winner_announcement).to eq('Jerry wins!')
       end
     end
   end
@@ -239,11 +237,11 @@ describe Players do
         allow(players).to receive(:gets).and_return('Jerry', 'Mogu')
       end
 
-      it 'changes player 1 name' do
+      it 'sets player 1 name' do
         expect { players.get_names }.to change { players.instance_variable_get(:@player1) }.to('Jerry')
       end
 
-      it 'changes player 2 name' do
+      it 'sets player 2 name' do
         expect { players.get_names }.to change { players.instance_variable_get(:@player2) }.to('Mogu')
       end
     end
@@ -284,12 +282,3 @@ describe Players do
   end
 
 end
-
-@board = [
-  ['◯', '◯', '◯', '◯', '◯', '◯', '◯'],
-  ['◯', '◯', '◯', '◯', '◯', '◯', '◯'],
-  ['◯', '◯', '◯', '◯', '◯', '◯', '◯'],
-  ['◯', '◯', '◯', '◯', '◯', '◯', '◯'],
-  ['◯', '◯', '◯', '◯', '◯', '◯', '◯'],
-  ['◯', '◯', '◯', '◯', '◯', '◯', '◯']
-]

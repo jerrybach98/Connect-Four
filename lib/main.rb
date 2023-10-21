@@ -7,11 +7,7 @@ class Game
     @players = players
   end 
 
-  def introduction
-    puts 'Welcome to Connect Four!'
-  end
-
-  # script method
+  # Keeping a clean public script method
   def play_game
     introduction
     @players.get_names
@@ -19,7 +15,12 @@ class Game
     puts game_loop
   end
 
-  # Looping script method
+  private
+
+  def introduction
+    puts 'Welcome to Connect Four!'
+  end
+
   def game_loop
     loop do
       @round += 1
@@ -27,10 +28,11 @@ class Game
       column = @players.get_input
       @board.drop_token(column, @round)
       @board.display_board
-      return winner if @board.check_win?
+      return winner_announcement if @board.check_win?
     end
   end
 
+  # No more tokens can be placed
   def draw?
     if @round == 43
       true
@@ -39,7 +41,7 @@ class Game
     end
   end
 
-  def winner
+  def winner_announcement
     if @board.check_win? && @round.odd?
       return "#{@players.player1} wins!"
     elsif @board.check_win? && @round.even?
@@ -58,8 +60,7 @@ class Board
       ['◯', '◯', '◯', '◯', '◯', '◯', '◯'],
       ['◯', '◯', '◯', '◯', '◯', '◯', '◯'],
       ['◯', '◯', '◯', '◯', '◯', '◯', '◯'],
-      ['◯', '◯', '◯', '◯', '◯', '◯', '◯']
-    ]
+      ['◯', '◯', '◯', '◯', '◯', '◯', '◯']]
   end
   
   def display_board
@@ -70,6 +71,7 @@ class Board
     puts "0 1 2 3 4 5 6"
   end
 
+  # Uses round numbers to alternate token color
   def drop_token(column, round)
     row = 0
     row = check_token_stack(row, column)
@@ -80,18 +82,7 @@ class Board
     end
   end
 
-  def check_token_stack(row, column)
-    until @board[row][column] == '◯'
-      row += 1
-    end
-    row
-  end
-
-  def column_full?(column)
-    @board.all? { |row| row[column] != '◯'}
-  end
-
-  # Script method to check for wins
+  # Checks for every win pattern
   def check_win?
     return true if row_win?
     return true if column_win?
@@ -99,8 +90,23 @@ class Board
     return true if left_diagonal?
     false
   end
+
+  # Used in player class to determine if a column is full when taking player input
+  def column_full?(column)
+    @board.all? { |row| row[column] != '◯'}
+  end
+
+  private
+
+  # See how full a column is and returns the number row that is empty
+  def check_token_stack(row, column)
+    until @board[row][column] == '◯'
+      row += 1
+    end
+    row
+  end
   
-  # sliding window?
+  # Uses a sliding window
   def row_win?
     @board.each do |row|
       col = 0 
@@ -159,7 +165,6 @@ class Board
     end
     false
   end
-
 end
 
 class Players
@@ -186,7 +191,7 @@ class Players
         return input if input.between?(0, 6) && board.column_full?(input) == false
         
         puts 'Position invalid, please place your token between 0 and 6'
-      rescue ArgumentError
+      rescue ArgumentError # Helps to handle invalid inputs if the string can't be converted to an integer
         puts 'Position invalid, please place your token between 0 and 6'
       end
     end
@@ -195,7 +200,13 @@ class Players
 
 end
 
-# board = Board.new
-# players = Players.new(board)
-# game = Game.new(board, players)
-# game.play_game
+board = Board.new
+players = Players.new(board)
+game = Game.new(board, players)
+game.play_game
+
+# review code / clean code / tests
+# private methods
+# apply style guide
+# separate code
+# run code

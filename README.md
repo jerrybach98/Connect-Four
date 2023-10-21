@@ -14,5 +14,5 @@ Connect Four is a command-line interface (CLI) game that allows two players to c
 * Adjusting RSpec to achieve the desired test output
 * Testing instance doubles and stubs to isolate dependencies during testing
 * Understanding the importance of the single responsibility principle and modular code for test-driven development
-* Creating a functioning command-line game that captures user input and implements the game's logic
-* Manipulating nested arrays to represent and update the game board dynamically
+* Creating a functioning game that captures user input and implements the game's logic
+* Manipulating nested arrays to represent and dynamically update the game board
