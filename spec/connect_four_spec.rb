@@ -123,8 +123,9 @@ describe Board do
     context 'check for any patterns of four' do 
       before do
         allow(win).to receive(:row_win?).and_return(false)
-        allow(win).to receive(:column_win?).and_return(true)
-        # allow(win).to receive(:diagonal_win?).and_return(true)
+        allow(win).to receive(:column_win?).and_return(false)
+        allow(win).to receive(:right_diagonal?).and_return(false)
+        allow(win).to receive(:left_diagonal?).and_return(true)
       end
 
       it 'returns true when one win pattern matches' do
@@ -163,15 +164,32 @@ describe Board do
     end
   end
 
-  describe '#diagonal_win?' do
-    subject(:row) { described_class.new }
+  describe '#right_diagonal?' do
+    subject(:right) { described_class.new }
 
     context 'check for four in a diagonal' do 
       before do
       end
 
-      xit 'returns true if four match in diagonal' do
-        expect(row.diagonal_win?).to eq true
+      it 'returns true if four match in right diagonal' do
+        board = right.instance_variable_get(:@board)
+        board[2][3], board[3][4], board[4][5], board[5][6] = '●', '●', '●', '●'
+        expect(right.right_diagonal?).to eq true
+      end
+    end
+  end
+
+  describe '#left_diagonal?' do
+    subject(:left) { described_class.new }
+
+    context 'check for four in a diagonal' do 
+      before do
+      end
+
+      it 'returns true if four match in left diagonal' do
+        board = left.instance_variable_get(:@board)
+        board[3][3], board[2][4], board[1][5], board[0][6] = '●', '●', '●', '●'
+        expect(left.left_diagonal?).to eq true
       end
     end
   end
@@ -248,20 +266,20 @@ end
 ]
 
 # left diagonol
-x ◯ ◯ x 0 0 0
-x ◯ ◯ ◯ ◯ 0 0
-x ◯ ◯ ◯ ◯ ◯ 0
-0 ◯ ◯ ◯ ◯ ◯ ◯
-0 0 ◯ ◯ ◯ ◯ ◯
-0 0 0 x ◯ ◯ ◯
+#◯ ◯ ◯ ◯ 0 0 0
+#◯ ◯ ◯ ◯ ◯ 0 0
+#x ◯ ◯ ◯ ◯ ◯ 0
+#0 x ◯ ◯ ◯ ◯ ◯
+#0 0 x ◯ ◯ ◯ ◯
+#0 0 0 x ◯ ◯ ◯
 
 # right diagonal
-0 0 0 ◯ ◯ ◯ ◯
-0 0 ◯ ◯ ◯ ◯ ◯
-0 ◯ ◯ ◯ ◯ ◯ ◯
-◯ ◯ ◯ ◯ ◯ ◯ 0
-◯ ◯ ◯ ◯ ◯ 0 0
-◯ ◯ ◯ ◯ 0 0 0
+# 0 0 0 x x x ◯
+# 0 0 x x x ◯ ◯
+# 0 x x x ◯ ◯ x
+# x x x ◯ ◯ x 0
+# x x x ◯ x 0 0
+# x x x x 0 0 0
 
-0 1 2 3 4 5 6
+# 0 1 2 3 4 5 6
 

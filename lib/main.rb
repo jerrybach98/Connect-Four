@@ -84,7 +84,8 @@ class Board
   def check_win?
     return true if row_win?
     return true if column_win?
-    #return true if diagonal_win?
+    return true if right_diagonal?
+    return true if left_diagonal?
     false
   end
   
@@ -120,14 +121,41 @@ class Board
     false
   end
 
-    # Columns
-      # Check 4, == X+1
-      # 
 
-    # Diagonals
-      # don't need to check full board
-      # X and Y, -1 + 1
-      # negative start from bottom
+  # left Diagonals
+    # don't need to check full board
+    # X and Y, -1 + 1
+    # negative start from bottom
+    # (range) each do row
+    # (range) each do column
+
+  def right_diagonal?
+    (0..2).each do |row|
+      (0..3).each do |col|
+        if @board[row][col] != '◯' && 
+          @board[row][col] == @board[row+1][col+1] && 
+          @board[row][col] == @board[row+2][col+2] && 
+          @board[row][col] == @board[row+3][col+3]
+          return true
+        end
+      end
+    end
+    false
+  end
+
+  def left_diagonal?
+    (3..5).each do |row|
+      (0..3).each do |col|
+        if @board[row][col] != '◯' && 
+          @board[row][col] == @board[row-1][col+1] && 
+          @board[row][col] == @board[row-2][col+2] && 
+          @board[row][col] == @board[row-3][col+3]
+          return true
+        end
+      end
+    end
+    false
+  end
 
   # Draw
 
