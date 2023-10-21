@@ -17,7 +17,7 @@ class Game
     introduction
     @players.get_names
     board.display_board
-    p game_loop
+    puts game_loop
   end
 
   # Looping script method
@@ -83,7 +83,7 @@ class Board
   # Script method to check for wins
   def check_win?
     return true if row_win?
-    #return true if column_win?
+    return true if column_win?
     #return true if diagonal_win?
     false
   end
@@ -104,9 +104,21 @@ class Board
     false
   end
 
-    # Rows
-      # Check for 4, each index == Y+1
-      # 0-fourth column is last column to right
+  def column_win?
+    transposed_board = @board.transpose
+    transposed_board.each do |row|
+      col = 0 
+
+      until col == 4
+        if row[col] != '◯' && row[col] == row[col+1] && row[col] == row[col+2] && row[col] == row[col+3]
+          return true
+        else 
+          col += 1
+        end
+      end
+    end
+    false
+  end
 
     # Columns
       # Check 4, == X+1

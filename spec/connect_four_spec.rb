@@ -122,8 +122,8 @@ describe Board do
 
     context 'check for any patterns of four' do 
       before do
-        allow(win).to receive(:row_win?).and_return(true)
-        # allow(win).to receive(:column_win?).and_return(true)
+        allow(win).to receive(:row_win?).and_return(false)
+        allow(win).to receive(:column_win?).and_return(true)
         # allow(win).to receive(:diagonal_win?).and_return(true)
       end
 
@@ -155,7 +155,9 @@ describe Board do
       before do
       end
 
-      xit 'returns true if four match in column 3' do
+      it 'returns true if four match in last column' do
+        board = column.instance_variable_get(:@board)
+        board[0][6], board[1][6], board[2][6], board[3][6] = '●', '●', '●', '●'
         expect(column.column_win?).to eq true
       end
     end
@@ -235,3 +237,31 @@ describe Players do
   end
 
 end
+
+@board = [
+  ['◯', '◯', '◯', '◯', '◯', '◯', '◯'],
+  ['◯', '◯', '◯', '◯', '◯', '◯', '◯'],
+  ['◯', '◯', '◯', '◯', '◯', '◯', '◯'],
+  ['◯', '◯', '◯', '◯', '◯', '◯', '◯'],
+  ['◯', '◯', '◯', '◯', '◯', '◯', '◯'],
+  ['◯', '◯', '◯', '◯', '◯', '◯', '◯']
+]
+
+# left diagonol
+x ◯ ◯ x 0 0 0
+x ◯ ◯ ◯ ◯ 0 0
+x ◯ ◯ ◯ ◯ ◯ 0
+0 ◯ ◯ ◯ ◯ ◯ ◯
+0 0 ◯ ◯ ◯ ◯ ◯
+0 0 0 x ◯ ◯ ◯
+
+# right diagonal
+0 0 0 ◯ ◯ ◯ ◯
+0 0 ◯ ◯ ◯ ◯ ◯
+0 ◯ ◯ ◯ ◯ ◯ ◯
+◯ ◯ ◯ ◯ ◯ ◯ 0
+◯ ◯ ◯ ◯ ◯ 0 0
+◯ ◯ ◯ ◯ 0 0 0
+
+0 1 2 3 4 5 6
+
