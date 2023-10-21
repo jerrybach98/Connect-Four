@@ -2,7 +2,7 @@ class Game
   attr_accessor :player1, :player2, :board
   
   def initialize(board, players)
-    @round = 1
+    @round = 0
     @board = board
     @players = players
   end 
@@ -11,34 +11,45 @@ class Game
     puts 'Welcome to Connect Four!'
   end
 
-
   # script method
   def play_game
     introduction
     @players.get_names
-    board.display_board
+    @board.display_board
     puts game_loop
   end
 
   # Looping script method
   def game_loop
     loop do
-      column = @players.get_input
-      board.drop_token(column, @round)
-      board.display_board
       @round += 1
-      return "Win" if board.check_win? # for rspec until win condition is written
+      return "It's a draw!" if draw?
+      column = @players.get_input
+      @board.drop_token(column, @round)
+      @board.display_board
+      return winner if @board.check_win?
     end
   end
 
-  # announcements
-  # Winner announce depending on round even or odd
+  def draw?
+    if @round == 43
+      true
+    else
+      false
+    end
+  end
+
+  def winner
+    if @board.check_win? && @round.odd?
+      return "#{@players.player1} wins!"
+    elsif @board.check_win? && @round.even?
+      return "#{@players.player2} wins!"
+    end
+  end
 
 end
 
 class Board
-  attr_accessor :player1, :player2
-
 
   def initialize
     @board = [
@@ -121,14 +132,6 @@ class Board
     false
   end
 
-
-  # left Diagonals
-    # don't need to check full board
-    # X and Y, -1 + 1
-    # negative start from bottom
-    # (range) each do row
-    # (range) each do column
-
   def right_diagonal?
     (0..2).each do |row|
       (0..3).each do |col|
@@ -157,12 +160,10 @@ class Board
     false
   end
 
-  # Draw
-
 end
 
 class Players
-  attr_accessor :board
+  attr_accessor :board, :player1, :player2
 
   def initialize(board)
     @player1 = nil
@@ -191,10 +192,6 @@ class Players
     end
     input
   end
-
-
-
-
 
 end
 

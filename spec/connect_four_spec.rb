@@ -16,7 +16,7 @@ describe Game do
         allow(players).to receive(:get_input)
         allow(players).to receive(:get_names)
         allow(board).to receive(:drop_token)
-        allow(game).to receive(:game_loop).and_return("Win") #
+        allow(game).to receive(:game_loop).and_return('Jerry wins!') 
       end
 
       it 'sends #get_names to player class' do
@@ -29,8 +29,8 @@ describe Game do
         game.play_game
       end
 
-      xit 'receives win message' do
-        expect(game.game_loop).to eq("Win")
+      it 'receives win message' do
+        expect(game.game_loop).to eq("Jerry wins!")
       end
     end
   end
@@ -47,6 +47,8 @@ describe Game do
         allow(game).to receive(:puts) # prevent puts information returned by function to display to console
         allow(board).to receive(:drop_token)
         allow(board).to receive(:check_win?).and_return(true)
+        allow(game).to receive(:draw?).and_return(false)
+        allow(game).to receive(:winner).and_return('Jerry wins!')
       end
 
       it 'sends #display_board' do
@@ -67,8 +69,35 @@ describe Game do
       it 'increments round by 1' do
         expect { game.game_loop }.to change { game.instance_variable_get(:@round) }
       end
+
+      it 'sends #check_win? to board class' do
+        expect(board).to receive(:check_win?).once
+        game.game_loop
+      end
+
+      it 'Does not end the game in a draw' do
+        expect(game.game_loop).to_not eq("It's a draw!")
+      end
     end
   end
+
+  describe '#winner' do
+    subject(:game) { described_class.new(board, players) }
+    let(:board) { instance_double(Board) }
+    let(:players) { instance_double(Players) }
+    
+    context "play games looping script method" do
+      before do 
+        allow(game).to receive(:winner).and_return('Jerry wins!')
+      end
+
+      it 'returns the winning message' do
+        expect(game.winner).to eq('Jerry wins!')
+      end
+    end
+  end
+
+
 end
 
 
@@ -264,22 +293,3 @@ end
   ['◯', '◯', '◯', '◯', '◯', '◯', '◯'],
   ['◯', '◯', '◯', '◯', '◯', '◯', '◯']
 ]
-
-# left diagonol
-#◯ ◯ ◯ ◯ 0 0 0
-#◯ ◯ ◯ ◯ ◯ 0 0
-#x ◯ ◯ ◯ ◯ ◯ 0
-#0 x ◯ ◯ ◯ ◯ ◯
-#0 0 x ◯ ◯ ◯ ◯
-#0 0 0 x ◯ ◯ ◯
-
-# right diagonal
-# 0 0 0 x x x ◯
-# 0 0 x x x ◯ ◯
-# 0 x x x ◯ ◯ x
-# x x x ◯ ◯ x 0
-# x x x ◯ x 0 0
-# x x x x 0 0 0
-
-# 0 1 2 3 4 5 6
-
