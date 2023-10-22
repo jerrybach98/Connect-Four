@@ -1,7 +1,6 @@
-require './lib/main.rb'
+require './lib/main'
 
 describe Game do
-  
   describe '#play_game' do
     context 'when public game script method gets called' do
       subject(:game) { described_class.new(board, players) }
@@ -14,7 +13,7 @@ describe Game do
         allow(players).to receive(:get_input)
         allow(players).to receive(:get_names)
         allow(board).to receive(:drop_token)
-        allow(game).to receive(:game_loop).and_return('Jerry wins!') 
+        allow(game).to receive(:game_loop).and_return('Jerry wins!')
       end
 
       it 'sends #get_names to player class' do
@@ -38,9 +37,9 @@ describe Game do
     subject(:game) { described_class.new(board, players) }
     let(:board) { instance_double(Board) }
     let(:players) { instance_double(Players) }
-    
-    context "when the game loop is run" do
-      before do 
+
+    context 'when the game loop is run' do
+      before do
         allow(game).to receive(:puts) # prevent puts information to display to console
         allow(game).to receive(:draw?).and_return(false)
         allow(players).to receive(:get_input)
@@ -51,7 +50,7 @@ describe Game do
       end
 
       it 'increments round by 1' do
-        expect { game.game_loop }.to change { game.instance_variable_get(:@round) }
+        expect { game.game_loop }.to(change { game.instance_variable_get(:@round) })
       end
 
       it 'does not end the game in a draw' do
@@ -84,9 +83,9 @@ describe Game do
     subject(:game) { described_class.new(board, players) }
     let(:board) { instance_double(Board) }
     let(:players) { instance_double(Players) }
-    
-    context "when a player wins" do
-      before do 
+
+    context 'when a player wins' do
+      before do
         allow(game).to receive(:winner_announcement).and_return('Jerry wins!')
       end
 
@@ -98,13 +97,12 @@ describe Game do
 end
 
 describe Board do
-  
   describe '#drop_token' do
     subject(:token) { described_class.new }
-    
+
     context 'when player gives a column and the round is odd' do
       it 'adds a token to change the game board' do
-        expect { token.drop_token(3, 1) }.to change { token.instance_variable_get(:@board) }
+        expect { token.drop_token(3, 1) }.to(change { token.instance_variable_get(:@board) })
       end
     end
   end
@@ -112,7 +110,7 @@ describe Board do
   describe '#check_win?' do
     subject(:win) { described_class.new }
 
-    context 'when the method checks for the four win conditions' do 
+    context 'when the method checks for the four win conditions' do
       before do
         allow(win).to receive(:row_win?).and_return(false)
         allow(win).to receive(:column_win?).and_return(false)
@@ -129,11 +127,11 @@ describe Board do
   describe '#column_full?' do
     subject(:token) { described_class.new }
 
-    context 'when a column is filled entirely' do 
+    context 'when a column is filled entirely' do
       it 'returns true' do
         board = token.instance_variable_get(:@board)
         board.each do |row|
-          row.map! do |element|
+          row.map! do |_element|
             element = '●'
           end
         end
@@ -144,11 +142,11 @@ describe Board do
 
   describe '#check_token_stack' do
     subject(:token) { described_class.new }
-    
-    context 'when there is one token in a column' do 
+
+    context 'when there is one token in a column' do
       it 'returns one' do
         board = token.instance_variable_get(:@board)
-        board[0][1] = "●"
+        board[0][1] = '●'
         expect(token.check_token_stack(0, 1)).to eq(1)
       end
     end
@@ -157,7 +155,7 @@ describe Board do
   describe '#row_win?' do
     subject(:row) { described_class.new }
 
-    context 'when four match on the second row' do 
+    context 'when four match on the second row' do
       it 'returns true' do
         board = row.instance_variable_get(:@board)
         board[1][3], board[1][4], board[1][5], board[1][6] = '●', '●', '●', '●'
@@ -169,7 +167,7 @@ describe Board do
   describe '#column_win?' do
     subject(:column) { described_class.new }
 
-    context 'when four match in a column' do 
+    context 'when four match in a column' do
       it 'returns true' do
         board = column.instance_variable_get(:@board)
         board[0][6], board[1][6], board[2][6], board[3][6] = '●', '●', '●', '●'
@@ -181,7 +179,7 @@ describe Board do
   describe '#right_diagonal?' do
     subject(:right) { described_class.new }
 
-    context 'when four match in a right diagonal' do 
+    context 'when four match in a right diagonal' do
       it 'returns true indicating a match' do
         board = right.instance_variable_get(:@board)
         board[2][3], board[3][4], board[4][5], board[5][6] = '●', '●', '●', '●'
@@ -193,7 +191,7 @@ describe Board do
   describe '#left_diagonal?' do
     subject(:left) { described_class.new }
 
-    context 'when four match in a left diagonal' do 
+    context 'when four match in a left diagonal' do
       it 'returns true indicating a match' do
         board = left.instance_variable_get(:@board)
         board[3][3], board[2][4], board[1][5], board[0][6] = '●', '●', '●', '●'
@@ -201,18 +199,14 @@ describe Board do
       end
     end
   end
-
-
-
 end
 
 describe Players do
-
   describe '#get_names' do
     context 'when both players enter their names' do
       subject(:players) { described_class.new(board) }
       let(:board) { instance_double(Board) }
-    
+
       before do
         allow(players).to receive(:puts)
         allow(players).to receive(:gets).and_return('Jerry', 'Mogu')
@@ -227,11 +221,11 @@ describe Players do
       end
     end
   end
-  
+
   describe '#get_input' do
     subject(:input) { described_class.new(board) }
     let(:board) { instance_double(Board) }
-    
+
     context 'when player inputs valid input between 0 and 6' do
       before do
         allow(input).to receive(:gets).and_return('5')
@@ -246,7 +240,6 @@ describe Players do
         expect(board).to receive(:column_full?)
         input.get_input
       end
-
     end
 
     context 'when given invalid input then valid input' do
@@ -261,5 +254,4 @@ describe Players do
       end
     end
   end
-
 end
