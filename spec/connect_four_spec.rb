@@ -1,4 +1,6 @@
 require './lib/main'
+require './lib/board'
+require './lib/players'
 
 describe Game do
   describe '#play_game' do
