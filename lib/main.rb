@@ -71,7 +71,7 @@ class Board
     puts "0 1 2 3 4 5 6"
   end
 
-  # Uses round numbers to alternate token color
+  # Use round numbers to alternate token color
   def drop_token(column, round)
     row = 0
     row = check_token_stack(row, column)
@@ -91,14 +91,14 @@ class Board
     false
   end
 
-  # Used in player class to determine if a column is full when taking player input
+  # Used in player class to determine if a column is already full when taking player input
   def column_full?(column)
     @board.all? { |row| row[column] != '◯'}
   end
 
   private
 
-  # See how full a column is and returns the number row that is empty
+  # Helper function to see how full a column is and return the row number that is empty
   def check_token_stack(row, column)
     until @board[row][column] == '◯'
       row += 1
@@ -188,7 +188,7 @@ class Players
       begin
         input = gets.chomp
         input = Integer(input)
-        return input if input.between?(0, 6) && board.column_full?(input) == false
+        return input if input.between?(0, 6) && @board.column_full?(input) == false
         
         puts 'Position invalid, please place your token between 0 and 6'
       rescue ArgumentError # Helps to handle invalid inputs if the string can't be converted to an integer
